@@ -9,6 +9,7 @@ const EventSchema = z.object({
   title: z.string().min(1, "Title is required").max(200),
   agenda: z.string().optional(),
   owner: z.string().min(1, "Owner is required").max(100),
+  role: z.enum(["Engineer", "Product Owner", "Engineering Manager"]),
 });
 
 type ValidationErrors = Partial<Record<keyof CalendarEventFormData, string>>;
@@ -26,6 +27,7 @@ const EMPTY: CalendarEventFormData = {
   title: "",
   agenda: "",
   owner: "",
+  role: "Engineer",
 };
 
 export default function EventForm({ initial, onSubmit, submitLabel }: Props) {
@@ -43,6 +45,7 @@ export default function EventForm({ initial, onSubmit, submitLabel }: Props) {
         title: initial.title,
         agenda: initial.agenda ?? "",
         owner: initial.owner,
+        role: initial.role,
       });
     }
   }, [initial]);
