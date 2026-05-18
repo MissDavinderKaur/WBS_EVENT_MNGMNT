@@ -1,0 +1,24 @@
+import mongoose, { Schema, Document } from "mongoose";
+
+export interface CalendarEvent {
+  date: string;
+  time: string;
+  duration: number;
+  title: string;
+  agenda?: string;
+  owner: string;
+}
+
+const eventSchema = new Schema<CalendarEvent>(
+  {
+    date: { type: String, required: true },
+    time: { type: String, required: true },
+    duration: { type: Number, required: true },
+    title: { type: String, required: true },
+    agenda: { type: String },
+    owner: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+
+export const Event = mongoose.model<CalendarEvent>("Event", eventSchema);
