@@ -27,10 +27,10 @@ export default function EventList() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Calendar Events</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Team Events</h1>
         <Link
           to="/events/new"
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+          className="bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
         >
           + New Event
         </Link>
@@ -48,7 +48,10 @@ export default function EventList() {
               <Link to={`/events/${event._id}`} className="flex-1 min-w-0">
                 <p className="font-semibold text-gray-900 truncate">{event.title}</p>
                 <p className="text-sm text-gray-500 mt-0.5">
-                  {event.date} at {event.time} &middot; {event.duration} min &middot; {event.owner}
+                  <b> Owner: </b>{event.owner} ({event.role})
+                </p>
+                <p className="text-sm text-gray-500 mt-0.5">
+                  {event.date} at {event.time}  ({event.duration} min) 
                 </p>
               </Link>
               <div className="flex gap-2 ml-4 shrink-0">

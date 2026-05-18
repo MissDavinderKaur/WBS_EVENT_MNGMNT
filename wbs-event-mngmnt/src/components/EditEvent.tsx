@@ -29,7 +29,7 @@ export default function EditEvent() {
 
   return (
     <div className="max-w-xl">
-      <Link to={`/events/${id}`} className="text-sm text-blue-600 hover:underline">&larr; Back to event</Link>
+      <Link to={`/events`} className="text-sm text-purple-600 hover:underline">&larr; Back to event list</Link>
       <h1 className="text-2xl font-bold text-gray-900 mt-4 mb-6">Edit Event</h1>
       {event && <EventForm initial={event} onSubmit={handleSubmit} submitLabel="Save Changes" />}
     </div>

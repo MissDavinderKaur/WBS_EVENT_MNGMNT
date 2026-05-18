@@ -7,9 +7,9 @@ import EditEvent from "./components/EditEvent";
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gray-50">
-        <header className="bg-white border-b border-gray-200 px-6 py-4">
-          <span className="text-lg font-semibold text-gray-800">Event Manager</span>
+      <div className="min-h-screen bg-purple-50">
+        <header className="bg-purple-200 border-b border-purple-300 px-6 py-4">
+          <span className="text-lg font-semibold text-purple-900">"Sprint Savants" Team</span>
         </header>
         <main className="max-w-3xl mx-auto px-6 py-8">
           <Routes>
