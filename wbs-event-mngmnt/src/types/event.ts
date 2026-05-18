@@ -13,7 +13,7 @@ export interface CalendarEvent {
 export interface CalendarEventFormData {
   date: string;
   time: string;
-  duration: number | "";
+  duration: number | 15;
   title: string;
   agenda: string;
   owner: string;
