@@ -145,7 +145,7 @@ export default function EventForm({ initial, onSubmit, submitLabel }: Props) {
       <button
         type="submit"
         disabled={submitting}
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-medium py-2.5 px-4 rounded-lg transition-colors"
+        className="w-full bg-purple-700 hover:bg-purple-800 disabled:opacity-60 text-white font-medium py-2.5 px-4 rounded-lg transition-colors"
       >
         {submitting ? "Saving…" : submitLabel}
       </button>
