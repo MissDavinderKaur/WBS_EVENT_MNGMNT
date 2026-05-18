@@ -6,5 +6,6 @@ export const EventSchema = z.object({
   duration: z.number({ error: "Duration must be a number" }).positive("Duration must be positive"),
   title: z.string().min(1, "Title is required").max(200),
   agenda: z.string().optional(),
-  owner: z.string().min(1, "Owner is required").max(100),
+  owner: z.string(),
+  role: z.enum(["Engineer", "Product Owner", "Engineering Manager"]),
 });

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export interface CalendarEvent {
   date: string;
@@ -7,6 +7,7 @@ export interface CalendarEvent {
   title: string;
   agenda?: string;
   owner: string;
+  role: "Engineer" | "Product Owner" | "Engineering Manager";
 }
 
 const eventSchema = new Schema<CalendarEvent>(
@@ -17,6 +18,7 @@ const eventSchema = new Schema<CalendarEvent>(
     title: { type: String, required: true },
     agenda: { type: String },
     owner: { type: String, required: true },
+    role: { type: String, enum: ["Engineer", "Product Owner", "Engineering Manager"], required: true },
   },
   { timestamps: true }
 );
