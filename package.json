@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "tsx watch server/index.ts",
     "start": "tsx server/index.ts",
-    "seed": "tsx server/scripts/seedEvents.ts"
+    "seed": "tsx server/scripts/seedEvents.ts",
+    "seed:users": "tsx server/scripts/seedUsers.ts"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",

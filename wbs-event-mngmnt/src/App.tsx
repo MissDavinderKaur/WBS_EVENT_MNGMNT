@@ -4,8 +4,10 @@ import EventDetail from "./components/EventDetail";
 import CreateEvent from "./components/CreateEvent";
 import EditEvent from "./components/EditEvent";
 import LogIn from "./components/LogIn";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 function Header() {
+  const auth = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -13,9 +15,21 @@ function Header() {
       <div className="flex items-center justify-between gap-4">
         <span className="text-lg font-semibold text-purple-900">"Sprint Savants" Team</span>
         <div className="flex items-center gap-4">
-          <button onClick={() => navigate("/login")}
-          className="bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
-          Log In
+          {auth.user?.isLoggedIn && (
+            <p className="text-sm text-purple-900">Hi, {auth.user.name}!</p>
+          )}
+          <button
+            onClick={() => {
+              if (auth.user?.isLoggedIn) {
+                auth.logout();
+                navigate("/");
+              } else {
+                navigate("/login");
+              }
+            }}
+            className="bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+          >
+            {auth.user?.isLoggedIn ? "Log Out" : "Log In"}
           </button>
         </div>
       </div>
@@ -25,6 +39,7 @@ function Header() {
 
 export default function App() {
   return (
+    <AuthProvider>
       <BrowserRouter>
         <div className="min-h-screen bg-purple-50">
           <Header />
@@ -40,5 +55,6 @@ export default function App() {
           </main>
         </div>
       </BrowserRouter>
+    </AuthProvider>
   );
 }

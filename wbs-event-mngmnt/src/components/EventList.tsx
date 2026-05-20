@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchEvents, deleteEvent } from "../api/eventsApi";
 import type { CalendarEvent } from "../types/event";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function EventList() {
+  const auth = useAuth();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -40,36 +42,47 @@ export default function EventList() {
         <p className="text-gray-500 text-center py-16">No events yet. Create one!</p>
       ) : (
         <ul className="space-y-3">
-          {events.map((event) => (
-            <li
-              key={event._id}
-              className="bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between hover:shadow-sm transition-shadow"
-            >
-              <Link to={`/events/${event._id}`} className="flex-1 min-w-0">
-                <p className="font-semibold text-gray-900 truncate">{event.title}</p>
-                <p className="text-sm text-gray-500 mt-0.5">
-                  <b> Owner: </b>{event.owner} ({event.role})
-                </p>
-                <p className="text-sm text-gray-500 mt-0.5">
-                  {event.date} at {event.time}  ({event.duration} min) 
-                </p>
-              </Link>
-              <div className="flex gap-2 ml-4 shrink-0">
-                <Link
-                  to={`/events/${event._id}/edit`}
-                  className="text-sm text-blue-600 hover:text-blue-800 font-medium px-3 py-1 rounded border border-blue-200 hover:bg-blue-50 transition-colors"
-                >
-                  Edit
+          {events.map((event) => {
+            const ownerNames = Array.isArray(event.owner) ? event.owner.join(", ") : event.owner;
+            const canModify = auth.user?.isLoggedIn
+              ? Array.isArray(event.owner)
+                ? event.owner.includes(auth.user.name)
+                : event.owner === auth.user.name
+              : false;
+
+            return (
+              <li
+                key={event._id}
+                className="bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between hover:shadow-sm transition-shadow"
+              >
+                <Link to={`/events/${event._id}`} className="flex-1 min-w-0">
+                  <p className="font-semibold text-gray-900 truncate">{event.title}</p>
+                  <p className="text-sm text-gray-500 mt-0.5">
+                    <b> Owner: </b>{ownerNames} ({event.role})
+                  </p>
+                  <p className="text-sm text-gray-500 mt-0.5">
+                    {event.date} at {event.time} ({event.duration} min)
+                  </p>
                 </Link>
-                <button
-                  onClick={() => handleDelete(event._id, event.title)}
-                  className="text-sm text-red-600 hover:text-red-800 font-medium px-3 py-1 rounded border border-red-200 hover:bg-red-50 transition-colors"
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
+                {canModify && (
+                  <div className="flex gap-2 ml-4 shrink-0">
+                    <Link
+                      to={`/events/${event._id}/edit`}
+                      className="text-sm text-blue-600 hover:text-blue-800 font-medium px-3 py-1 rounded border border-blue-200 hover:bg-blue-50 transition-colors"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(event._id, event.title)}
+                      className="text-sm text-red-600 hover:text-red-800 font-medium px-3 py-1 rounded border border-red-200 hover:bg-red-50 transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

@@ -1,21 +1,37 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { loginRequest } from "../api/authApi";
 
 const usernames: string[] = ["Ada", "Bob", "Carla", "Dave", "Eleanor", "Fred"];
 
 export default function LogIn() {
+  const auth = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState<string>("Ada");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setError("");
+
     if (!password.trim()) {
       setError("Password is required");
       return;
     }
-    navigate("/");
+
+    setLoading(true);
+    try {
+      const result = await loginRequest({ username: name, password });
+      auth.login({ name: result.username as any, role: result.role, token: result.token, isLoggedIn: true });
+      navigate("/");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -50,9 +66,10 @@ export default function LogIn() {
 
         <button
           type="submit"
-          className="w-full bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+          disabled={loading}
+          className="w-full bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Log in
+          {loading ? "Logging in..." : "Log in"}
         </button>
       </form>
     </div>
