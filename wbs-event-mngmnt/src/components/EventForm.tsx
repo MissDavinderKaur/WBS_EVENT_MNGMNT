@@ -16,6 +16,7 @@ type ValidationErrors = Partial<Record<keyof CalendarEventFormData, string>>;
 
 interface Props {
   initial?: CalendarEvent;
+  defaultValues?: Partial<CalendarEventFormData>;
   onSubmit: (data: CalendarEventFormData) => Promise<void>;
   submitLabel: string;
 }
@@ -30,8 +31,8 @@ const EMPTY: CalendarEventFormData = {
   role: "Engineer",
 };
 
-export default function EventForm({ initial, onSubmit, submitLabel }: Props) {
-  const [form, setForm] = useState<CalendarEventFormData>(EMPTY);
+export default function EventForm({ initial, defaultValues, onSubmit, submitLabel }: Props) {
+  const [form, setForm] = useState<CalendarEventFormData>(() => ({ ...EMPTY, ...defaultValues }));
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
@@ -47,8 +48,10 @@ export default function EventForm({ initial, onSubmit, submitLabel }: Props) {
         owner: initial.owner,
         role: initial.role,
       });
+    } else if (defaultValues) {
+      setForm((prev) => ({ ...EMPTY, ...defaultValues, ...prev }));
     }
-  }, [initial]);
+  }, [initial, defaultValues]);
 
   function set<K extends keyof CalendarEventFormData>(key: K, value: CalendarEventFormData[K]) {
     setForm((f) => ({ ...f, [key]: value }));
