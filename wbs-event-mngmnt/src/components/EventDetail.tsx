@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { fetchEvent, deleteEvent } from "../api/eventsApi";
+import { useAuth } from "../contexts/AuthContext";
 import type { CalendarEvent } from "../types/event";
 
 export default function EventDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const auth = useAuth();
   const [event, setEvent] = useState<CalendarEvent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -50,20 +52,22 @@ export default function EventDetail() {
         )}
       </div>
 
-      <div className="flex gap-3 mt-4">
-        <Link
-          to={`/events/${event._id}/edit`}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-        >
-          Edit
-        </Link>
-        <button
-          onClick={handleDelete}
-          className="bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-        >
-          Delete
-        </button>
-      </div>
+      {auth.user?.name === event.owner && (
+        <div className="flex gap-3 mt-4">
+          <Link
+            to={`/events/${event._id}/edit`}
+            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+          >
+            Edit
+          </Link>
+          <button
+            onClick={handleDelete}
+            className="bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+          >
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 }

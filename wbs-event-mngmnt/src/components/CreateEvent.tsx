@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import EventForm from "../components/EventForm";
 import { createEvent } from "../api/eventsApi";
 import { useAuth } from "../contexts/AuthContext";
@@ -15,6 +15,8 @@ export default function CreateEvent() {
 
   return (
     <div className="max-w-xl">
+      <Link to="/" className="text-sm text-blue-600 hover:underline">&larr; Back to events</Link>
+
       <h1 className="text-2xl font-bold text-gray-900 mb-6">New Event</h1>
       <EventForm
         onSubmit={handleSubmit}
