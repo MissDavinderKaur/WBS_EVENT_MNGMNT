@@ -31,7 +31,7 @@ export default function EventList() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Team Events</h1>
         <Link
-          to="/events/new"
+          to={auth.user?.isLoggedIn ? "/events/new" : "/login"}
           className="bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
         >
           + New Event
