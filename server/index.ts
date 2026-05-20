@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import eventsRouter from "./routes/events.js";
+import authRouter from "./routes/auth.js";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/events", eventsRouter);
+app.use("/api/auth", authRouter);
 
 mongoose
   .connect(MONGO_URI)
